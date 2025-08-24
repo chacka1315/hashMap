@@ -2,6 +2,7 @@ import { LinkedList } from "./bucketLinkedList.js";
 export class hashMap {
   #load_factor = 0.8;
   #capacity = 16;
+  #length = 0;
   constructor() {
     this.buckets = Array(this.#capacity);
   }
@@ -21,9 +22,39 @@ export class hashMap {
     if (!this.buckets[hashCode]) {
       this.buckets[hashCode] = new LinkedList();
       this.buckets[hashCode].append(key, value);
+      this.#length++;
       return;
     }
     const node = this.buckets[hashCode].find(key);
-    node ? (node.value = value) : this.buckets[hashCode].append(key, value);
+    if (node) {
+      node.value = value;
+    } else {
+      this.buckets[hashCode].append(key, value);
+      this.#length++;
+    }
+  }
+
+  get(key) {
+    const hashCode = this.hash(key);
+    if (!this.buckets[hashCode]) return null;
+    const node = this.buckets[hashCode].find(key);
+    if (node) return node.value;
+    return null;
+  }
+
+  has(key) {
+    const hashCode = this.hash(key);
+    return this.buckets[hashCode].contains(key);
+  }
+
+  remove(key) {
+    const hashCode = this.hash(key);
+    const removeResult = this.buckets[hashCode].removeNode(key);
+    removeResult && this.#length--;
+    return removeResult;
+  }
+
+  get length() {
+    return this.#length;
   }
 }

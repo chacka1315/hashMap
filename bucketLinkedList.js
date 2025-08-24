@@ -29,7 +29,7 @@ export class LinkedList {
   }
 
   get head() {
-    if (!this.#head) return "The list is empty !";
+    if (!this.#head) return "This bucket is empty !";
     return this.#head;
   }
 
@@ -73,12 +73,12 @@ export class LinkedList {
     }
   }
 
-  contains(value) {
+  contains(key) {
     if (!this.#head) return false;
     let isContains = false;
     let node = this.#head;
-    while (node.nextNode !== null) {
-      if (node.value === value) {
+    while (node !== null) {
+      if (node.key === key) {
         return (isContains = true);
       }
       node = node.nextNode;
@@ -152,6 +152,24 @@ export class LinkedList {
     }
   }
 
+  removeNode(key) {
+    if (!this.#head) return false;
+    if (this.#head.key === key) {
+      this.#head = this.head.nextNode;
+      return true;
+    }
+    let node = this.#head.nextNode;
+    let previousNode = this.#head;
+    while (node !== null) {
+      if (node.key === key) {
+        previousNode.nextNode = node.nextNode;
+        return true;
+      }
+      previousNode = node;
+      node = node.nextNode;
+    }
+    return false;
+  }
   removeAt(index) {
     const listeSize = this.size();
     if (!this.#head) return "The list is empty !";
