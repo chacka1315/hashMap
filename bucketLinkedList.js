@@ -29,48 +29,17 @@ export class LinkedList {
   }
 
   get head() {
-    if (!this.#head) return "This bucket is empty !";
+    if (!this.#head) return null;
     return this.#head;
   }
 
   get tail() {
-    if (!this.#head) return "The list is empty !";
+    if (!this.#head) return null;
     let lastNode = this.#head;
     while (lastNode.nextNode !== null) {
       lastNode = lastNode.nextNode;
     }
     return lastNode;
-  }
-
-  at(index) {
-    if (!this.#head) return "The list is empty !";
-    let targetedNode = null;
-    let count = 0;
-    let currentNode = this.#head;
-    while (currentNode && !targetedNode) {
-      if (index === count) targetedNode = currentNode;
-      currentNode = currentNode.nextNode;
-      count++;
-    }
-    return targetedNode ? targetedNode : "No node at that index !";
-  }
-
-  pop() {
-    if (!this.#head) return "The list is empty !";
-    if (!this.#head.nextNode) {
-      this.#head = null;
-    } else {
-      let node = this.#head.nextNode;
-      let previous = this.#head;
-      while (node !== null) {
-        if (node.nextNode === null) {
-          previous.nextNode = null;
-          return;
-        }
-        previous = node;
-        node = node.nextNode;
-      }
-    }
   }
 
   contains(key) {
@@ -104,15 +73,16 @@ export class LinkedList {
     let node = this.#head;
     while (node !== null) {
       if (node.key === key) {
-        return `Found at index : ${index}`;
+        return index;
       }
       index++;
       node = node.nextNode;
     }
     return null;
   }
+
   toString() {
-    if (!this.#head) return "The list is empty !";
+    if (!this.#head) return null;
     let listString = `( ${this.#head.node} ) --> `;
     let node = this.#head.nextNode;
     while (node !== null) {
@@ -122,40 +92,10 @@ export class LinkedList {
     return listString + null;
   }
 
-  insertAt(value, index) {
-    const listeSize = this.size();
-
-    if (!this.#head) return "The list is empty !";
-    if (index === 0) {
-      this.prepend(value);
-      return;
-    } else if (index > listeSize) {
-      throw new Error(`Max index is ${listeSize}`);
-    } else if (index === this.size()) {
-      this.append(value);
-      return;
-    }
-
-    let node = this.#head.nextNode;
-    let previousNode = this.#head;
-    let count = 1;
-    while (node !== null) {
-      if (count === index) {
-        const newNode = new Node(value);
-        previousNode.nextNode = newNode;
-        newNode.nextNode = node;
-        return;
-      }
-      previousNode = node;
-      node = node.nextNode;
-      count++;
-    }
-  }
-
   removeNode(key) {
     if (!this.#head) return false;
     if (this.#head.key === key) {
-      this.#head = this.head.nextNode;
+      this.#head = this.#head.nextNode;
       return true;
     }
     let node = this.#head.nextNode;
@@ -169,30 +109,5 @@ export class LinkedList {
       node = node.nextNode;
     }
     return false;
-  }
-  removeAt(index) {
-    const listeSize = this.size();
-    if (!this.#head) return "The list is empty !";
-    if (index === 0) {
-      this.#head = this.#head.nextNode;
-      return;
-    } else if (index > listeSize - 1) {
-      throw new Error(`Max index is ${listeSize - 1}`);
-    } else if (index === this.size() - 1) {
-      this.pop();
-      return;
-    }
-    let node = this.#head.nextNode;
-    let previousNode = this.#head;
-    let count = 1;
-    while (node !== null) {
-      if (count === index) {
-        previousNode.nextNode = node.nextNode;
-        return;
-      }
-      previousNode = node;
-      node = node.nextNode;
-      count++;
-    }
   }
 }
