@@ -57,4 +57,34 @@ export class hashMap {
   get length() {
     return this.#length;
   }
+
+  clear() {
+    this.#capacity = 16;
+    this.#length = 0;
+    this.buckets = Array(this.#capacity);
+  }
+
+  keys() {
+    let keys = [];
+    this.buckets.forEach((bucket) => {
+      let node = bucket.head;
+      while (node) {
+        keys.push(node.key);
+        node = node.nextNode;
+      }
+    });
+    return keys;
+  }
+
+  values() {
+    let values = [];
+    this.buckets.forEach((bucket) => {
+      let node = bucket.head;
+      while (node) {
+        values.push(node.value);
+        node = node.nextNode;
+      }
+    });
+    return values;
+  }
 }
