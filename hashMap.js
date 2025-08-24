@@ -1,6 +1,6 @@
 import { LinkedList } from "./bucketLinkedList.js";
-export class hashMap {
-  #load_factor = 0.8;
+export class HashMap {
+  #load_factor = 0.75;
   #capacity = 16;
   #length = 0;
   constructor() {
@@ -86,5 +86,17 @@ export class hashMap {
       }
     });
     return values;
+  }
+
+  entries() {
+    let entries = [];
+    this.buckets.forEach((bucket) => {
+      let node = bucket.head;
+      while (node) {
+        entries.push([node.key, node.value]);
+        node = node.nextNode;
+      }
+    });
+    return entries;
   }
 }
